@@ -3,7 +3,7 @@ services:
     name: lms-backend
     env: node
     plan: free
-    buildCommand: cd backend && npm install
+    buildCommand: cd backend && npm install && npm rebuild better-sqlite3
     startCommand: node backend/server.js
     envVars:
       - key: RENDER
@@ -13,3 +13,4 @@ services:
     name: lms-frontend
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/build
+
