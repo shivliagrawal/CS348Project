@@ -35,12 +35,16 @@ if (process.env.DATABASE_URL) {
 
 // ---- Fallback for Render free tier: SQLite file ----
 if (process.env.RENDER === 'true' && !process.env.DATABASE_URL) {
+  const sqlite = require('better-sqlite3');  // 👈 manually use the better driver
+
   sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'lms.sqlite',   // persisted on Render’s disk
+    dialectModule: sqlite,                 // 👈 inject better-sqlite3
+    storage: 'lms.sqlite',
     logging: console.log,
   });
-  console.log('📦 Using SQLite on Render');
+
+  console.log('📦 Using better-sqlite3 on Render');
 }
 
 module.exports = sequelize;
