@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 
 const ReportPage = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [selectedQuizId, setSelectedQuizId] = useState('');
   const [report, setReport] = useState(null);
 
-  // Fetch quizzes for dropdown
   useEffect(() => {
     const fetchQuizzes = async () => {
-      const res = await axios.get('http://localhost:5050/api/quizzes');
+      const res = await API.get('/api/quizzes');
       setQuizzes(res.data);
     };
     fetchQuizzes();
@@ -17,7 +16,7 @@ const ReportPage = () => {
 
   const handleGenerateReport = async () => {
     if (!selectedQuizId) return;
-    const res = await axios.get(`http://localhost:5050/api/reports/quiz/${selectedQuizId}`);
+    const res = await API.get(`/api/reports/quiz/${selectedQuizId}`);
     setReport(res.data);
   };
 

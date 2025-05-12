@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import API from '../api';
 
 const ManageQuestions = () => {
   const { quizId } = useParams();
@@ -9,7 +9,7 @@ const ManageQuestions = () => {
 
   const fetchQuestions = async () => {
     try {
-      const res = await axios.get(`http://localhost:5050/api/questions/${quizId}`);
+      const res = await API.get(`/api/questions/${quizId}`);
       setQuestions(res.data);
     } catch (err) {
       console.error('Fetch error:', err.message);
@@ -21,7 +21,7 @@ const ManageQuestions = () => {
 
   const addQuestion = async () => {
     try {
-      await axios.post(`http://localhost:5050/api/questions`, {
+      await API.post('/api/questions', {
         quiz_id: quizId,
         question_text: form.question_text,
         correct_option: form.correct_option,
@@ -34,7 +34,7 @@ const ManageQuestions = () => {
   };
 
   const deleteQuestion = async (id) => {
-    await axios.delete(`http://localhost:5050/api/questions/${id}`);
+    await API.delete(`/api/questions/${id}`);
     fetchQuestions();
   };
 

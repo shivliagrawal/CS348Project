@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 
 const TeacherDashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [form, setForm] = useState({ title: '', description: '', teacher_id: 1 });
 
   const fetchQuizzes = async () => {
-    const res = await axios.get('http://localhost:5050/api/quizzes');
+    const res = await API.get('/api/quizzes');
     setQuizzes(res.data);
   };
 
@@ -14,17 +14,19 @@ const TeacherDashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:5050/api/quizzes', form);
+    await API.post('/api/quizzes', form);
     setForm({ title: '', description: '', teacher_id: 1 });
     fetchQuizzes();
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5050/api/quizzes/${id}`);
+    await API.delete(`/api/quizzes/${id}`);
     fetchQuizzes();
   };
 
-  useEffect(() => { fetchQuizzes(); }, []);
+  useEffect(() => {
+    fetchQuizzes();
+  }, []);
 
   return (
     <div>
@@ -42,7 +44,7 @@ const TeacherDashboard = () => {
             <strong>{q.title}</strong>: {q.description}
             <button onClick={() => handleDelete(q.quiz_id)}>Delete</button>
             <button onClick={() => window.location.href = `/teacher/quiz/${q.quiz_id}/questions`}>
-            Manage Questions
+              Manage Questions
             </button>
           </li>
         ))}
